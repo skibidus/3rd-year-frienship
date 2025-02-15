@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Crazy Friendship Journey!</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #FFB5E8 0%, #B5DEFF 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #2c3e50;
+            overflow-x: hidden;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🌈</text></svg>") 16 0, auto;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            color: #FF69B4;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .friendship-date {
+            font-size: 1.5rem;
+            color: #2d3436;
+            margin: 1rem 0;
+        }
+
+        .timer {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .time-block {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .time-block:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FF69B4;
+        }
+
+        .label {
+            font-size: 0.9rem;
+            color: #636e72;
+        }
+
+        .emoji-rain {
+            position: fixed;
+            font-size: 24px;
+            user-select: none;
+            pointer-events: none;
+            animation: fall 3s linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .fun-button {
+            background: #FF69B4;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            margin: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .fun-button:hover {
+            transform: scale(1.1) rotate(-5deg);
+            background: #ff1493;
+        }
+
+        .meme-container {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .meme-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FF69B4;
+            margin: 1rem 0;
+        }
+
+        .dance-emoji {
+            font-size: 3rem;
+            animation: dance 1s infinite;
+            display: inline-block;
+        }
+
+        @keyframes dance {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(-10deg); }
+            75% { transform: translateY(-10px) rotate(10deg); }
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .music-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #FF69B4;
+            padding: 15px;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .friend-quotes {
+            display: none;
+            position: absolute;
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            animation: popIn 0.5s ease-out;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            
+            .timer {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+    <div class="container">
+        <h1>Our CRAZY Friendship! 🎉</h1>
+        
+        <div class="friendship-date">
+            Partners in Crime since <span id="start-date">February 20, 2022</span>
+        </div>
+
+        <div class="timer">
+            <div class="time-block">
+                <div class="number" id="years">0</div>
+                <div class="label">Years of Chaos</div>
+            </div>
+            <div class="time-block">
+                <div class="number" id="months">0</div>
+                <div class="label">Months of Madness</div>
+            </div>
+            <div class="time-block">
+                <div class="number" id="days">0</div>
+                <div class="label">Days of Laughs</div>
+            </div>
+            <div class="time-block">
+                <div class="number" id="hours">0</div>
+                <div class="label">Hours of Fun</div>
+            </div>
+        </div>
+
+        <button class="fun-button" onclick="startParty()">Click for Party Mode! 🎈</button>
+
+        <div class="meme-container">
+            <div class="meme-text">"When you realize you're both equally weird..."</div>
+            <span class="dance-emoji">🕺</span>
+            <span class="dance-emoji">💃</span>
+        </div>
+
+        <div class="message">
+            <p>To my partner in crime! 🦹‍♀️</p>
+            <p>Thanks for being as weird as me! Here's to all our crazy adventures, silly jokes, and embarrassing moments that we'll probably never live down! 😂</p>
+            <p>Click anywhere for more fun! 🎮</p>
+        </div>
+    </div>
+
+    <div class="music-controls" onclick="toggleMusic()">
+        🎵
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    <script>
+        const startDate = new Date('2022-02-15');
+        const funnyEmojis = ['🎈', '🎉', '🦄', '🌈', '🍕', '🎪', '🎭', '🎨', '🎪', '🎢'];
+        const funnyQuotes = [
+            "Friends don't let friends do silly things alone!",
+            "We're a different kind of crazy!",
+            "Normal is boring anyway!",
+            "Partners in crime since forever!",
+            "Two weirdos are better than one!"
+        ];
+
+        function updateTimer() {
+            const startDate = new Date("2022-02-20T00:00:00"); // Replace with your start date
+const now = new Date();
+
+// Calculate raw differences
+let years = now.getFullYear() - startDate.getFullYear();
+let months = now.getMonth() - startDate.getMonth();
+let days = now.getDate() - startDate.getDate();
+let hours = now.getHours() - startDate.getHours();
+
+// Adjust for negative hours
+if (hours < 0) {
+  hours += 24;
+  days--;
+}
+
+// Adjust for negative days (borrow days from previous month)
+if (days < 0) {
+  const lastDayOfPreviousMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+  days += lastDayOfPreviousMonth; // Adds actual days of the previous month
+  months--;
+}
+
+// Adjust for negative months (borrow months from years)
+if (months < 0) {
+  months += 12;
+  years--;
+}
+
+            document.getElementById('years').textContent = years;
+            document.getElementById('months').textContent = months;
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+        }
+
+        function createEmojiRain() {
+            const emoji = funnyEmojis[Math.floor(Math.random() * funnyEmojis.length)];
+            const element = document.createElement('div');
+            element.className = 'emoji-rain';
+            element.textContent = emoji;
+            element.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(element);
+
+            element.addEventListener('animationend', () => {
+                element.remove();
+            });
+        }
+
+        function startParty() {
+            // Start confetti
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+
+            // Start emoji rain
+            for(let i = 0; i < 20; i++) {
+                setTimeout(createEmojiRain, i * 200);
+            }
+
+            // Show random quote
+            const quote = funnyQuotes[Math.floor(Math.random() * funnyQuotes.length)];
+            const quoteElement = document.createElement('div');
+            quoteElement.className = 'friend-quotes';
+            quoteElement.textContent = quote;
+            quoteElement.style.left = Math.random() * 50 + 25 + '%';
+            quoteElement.style.top = Math.random() * 50 + 25 + '%';
+            document.body.appendChild(quoteElement);
+            quoteElement.style.display = 'block';
+
+            setTimeout(() => {
+                quoteElement.remove();
+            }, 3000);
+        }
+
+        // Music controls
+        const music = document.getElementById('bgMusic');
+        let isMusicPlaying = false;
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                music.pause();
+            } else {
+                music.play();
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        // Make entire page interactive
+        document.addEventListener('click', (e) => {
+            if (Math.random() > 0.5) {
+                createEmojiRain();
+            } else {
+                confetti({
+                    particleCount: 5,
+                    spread: 30,
+                    origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight }
+                });
+            }
+        });
+
+        updateTimer();
+        setInterval(updateTimer, 1000 * 60 * 60);
+    </script>
+</body>
+</html>
