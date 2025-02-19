@@ -1,365 +1,693 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Our Crazy Friendship Journey!</title>
     <style>
+      body {
+        margin: 0;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #ffb5e8 0%, #b5deff 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #2c3e50;
+        overflow-x: hidden;
+        /* Updated cursor with a celebration emoji 🎉 */
+        /* cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🎉</text></svg>") 16 0, auto; */
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        position: relative;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      h1 {
+        color: #ff69b4;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .friendship-date {
+        font-size: 1.5rem;
+        color: #2d3436;
+        margin: 1rem 0;
+      }
+
+      .timer {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin: 2rem 0;
+      }
+
+      .time-block {
+        background: #fff;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .time-block:hover {
+        transform: scale(1.1) rotate(5deg);
+      }
+
+      .number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #ff69b4;
+      }
+
+      .label {
+        font-size: 0.9rem;
+        color: #636e72;
+      }
+
+      .emoji-rain {
+        position: fixed;
+        font-size: 24px;
+        user-select: none;
+        pointer-events: none;
+        animation: fall 3s linear forwards;
+      }
+
+      @keyframes fall {
+        0% {
+          transform: translateY(-100vh) rotate(0deg);
+        }
+        100% {
+          transform: translateY(100vh) rotate(360deg);
+        }
+      }
+
+      .fun-button {
+        background: #ff69b4;
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        margin: 1rem;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .fun-button:hover {
+        transform: scale(1.1) rotate(-5deg);
+        background: #ff1493;
+      }
+
+      /* Dance Block with blinking lights effect */
+      .meme-container {
+        margin: 2rem 0;
+        padding: 1rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        /* Blinking lights effect via glowing box-shadow */
+        animation: blinkLights 2s infinite;
+      }
+
+      @keyframes blinkLights {
+        0%,
+        100% {
+          box-shadow: 0 0 10px #ff69b4;
+        }
+        50% {
+          box-shadow: 0 0 20px #ff1493;
+        }
+      }
+
+      .meme-text {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #ff69b4;
+        margin: 1rem 0;
+      }
+
+      /* Dancing emojis with two animations: dance and blink */
+      .dance-emoji {
+        font-size: 3rem;
+        animation: dance 1s infinite, blink 1.5s infinite;
+        animation-play-state: paused;
+        display: inline-block;
+      }
+
+      @keyframes dance {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        25% {
+          transform: translateY(-10px) rotate(-10deg);
+        }
+        75% {
+          transform: translateY(-10px) rotate(10deg);
+        }
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+          filter: drop-shadow(0 0 5px #ff69b4);
+        }
+        50% {
+          opacity: 0.5;
+          filter: drop-shadow(0 0 15px #ff69b4);
+        }
+      }
+
+      .friend-quotes {
+        display: none;
+        position: absolute;
+        background: white;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        animation: popIn 0.5s ease-out;
+      }
+
+      @keyframes popIn {
+        0% {
+          transform: scale(0);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Teasing Zone Section */
+      .teasing-section {
+        margin: 2rem 0;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .teasing-section h2 {
+        color: #ff1493;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .teasing-section p {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin: 1rem 0;
+      }
+
+      @keyframes teaseBounce {
+        0% {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.05);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .tease-animation {
+        animation: teaseBounce 0.5s ease-out;
+      }
+
+      /* Balloon Pop Game Section */
+      .balloon-game-section {
+        margin: 2rem 0;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .balloon {
+        position: absolute;
+        font-size: 2rem;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .balloon:hover {
+        transform: scale(1.2);
+      }
+
+      @keyframes balloonFloat {
+        from {
+          bottom: 0;
+        }
+        to {
+          bottom: 100%;
+        }
+      }
+
+      /* Virtual Hug */
+      .virtual-hug {
+        position: fixed;
+        font-size: 5rem;
+        z-index: 1000;
+        pointer-events: none;
+        animation: hugFloat 3s ease-out forwards;
+      }
+
+      @keyframes hugFloat {
+        0% {
+          opacity: 0;
+          transform: translateY(0) scale(0.5);
+        }
+        20% {
+          opacity: 1;
+          transform: translateY(-50px) scale(1.2);
+        }
+        80% {
+          opacity: 1;
+          transform: translateY(-250px) scale(1.2);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-300px) scale(1);
+        }
+      }
+
+      /* Mobile Adjustments for better readability */
+      @media (max-width: 600px) {
         body {
-            margin: 0;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #FFB5E8 0%, #B5DEFF 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #2c3e50;
-            overflow-x: hidden;
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🌈</text></svg>") 16 0, auto;
+          font-size: 18px;
+          line-height: 1.6;
         }
 
         .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            position: relative;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+          margin: 1rem;
+          padding: 1rem;
         }
 
         h1 {
-            color: #FF69B4;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+          font-size: 2rem;
         }
 
         .friendship-date {
-            font-size: 1.5rem;
-            color: #2d3436;
-            margin: 1rem 0;
-        }
-
-        .timer {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .time-block {
-            background: #fff;
-            padding: 1rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .time-block:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #FF69B4;
-        }
-
-        .label {
-            font-size: 0.9rem;
-            color: #636e72;
-        }
-
-        .emoji-rain {
-            position: fixed;
-            font-size: 24px;
-            user-select: none;
-            pointer-events: none;
-            animation: fall 3s linear forwards;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-            }
-        }
-
-        .fun-button {
-            background: #FF69B4;
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            margin: 1rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .fun-button:hover {
-            transform: scale(1.1) rotate(-5deg);
-            background: #ff1493;
-        }
-
-        .meme-container {
-            margin: 2rem 0;
-            padding: 1rem;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          font-size: 1.2rem;
         }
 
         .meme-text {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #FF69B4;
-            margin: 1rem 0;
+          font-size: 1.3rem;
         }
 
-        .dance-emoji {
-            font-size: 3rem;
-            animation: dance 1s infinite;
-            display: inline-block;
+        .fun-button {
+          font-size: 1rem;
+          padding: 0.8rem 1.5rem;
         }
 
-        @keyframes dance {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-10px) rotate(-10deg); }
-            75% { transform: translateY(-10px) rotate(10deg); }
+        .timer {
+          grid-template-columns: repeat(2, 1fr);
         }
-
-        #confetti-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 999;
-        }
-
-        .music-controls {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #FF69B4;
-            padding: 15px;
-            border-radius: 50%;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            cursor: pointer;
-            z-index: 1000;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .friend-quotes {
-            display: none;
-            position: absolute;
-            background: white;
-            padding: 1rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            animation: popIn 0.5s ease-out;
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                margin: 1rem;
-                padding: 1rem;
-            }
-            
-            .timer {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <canvas id="confetti-canvas"></canvas>
     <div class="container">
-        <h1>Our CRAZY Friendship! 🎉</h1>
-        
-        <div class="friendship-date">
-            Partners in Crime since <span id="start-date">February 20, 2022</span>
-        </div>
+      <h1>Our CRAZY Friendship! 🎉</h1>
 
-        <div class="timer">
-            <div class="time-block">
-                <div class="number" id="years">0</div>
-                <div class="label">Years of Chaos</div>
-            </div>
-            <div class="time-block">
-                <div class="number" id="months">0</div>
-                <div class="label">Months of Madness</div>
-            </div>
-            <div class="time-block">
-                <div class="number" id="days">0</div>
-                <div class="label">Days of Laughs</div>
-            </div>
-            <div class="time-block">
-                <div class="number" id="hours">0</div>
-                <div class="label">Hours of Fun</div>
-            </div>
-        </div>
+      <div class="friendship-date">
+        Annoying each other since <span id="start-date">February 20, 2022</span>
+      </div>
 
-        <button class="fun-button" onclick="startParty()">Click for Party Mode! 🎈</button>
-
-        <div class="meme-container">
-            <div class="meme-text">"When you realize you're both equally weird..."</div>
-            <span class="dance-emoji">🕺</span>
-            <span class="dance-emoji">💃</span>
+      <div class="timer">
+        <div class="time-block">
+          <div class="number" id="years">0</div>
+          <div class="label">Years of Chaos</div>
         </div>
-
-        <div class="message">
-            <p>To my partner in crime! 🦹‍♀️</p>
-            <p>Thanks for being as weird as me! Here's to all our crazy adventures, silly jokes, and embarrassing moments that we'll probably never live down! 😂</p>
-            <p>Click anywhere for more fun! 🎮</p>
+        <div class="time-block">
+          <div class="number" id="months">0</div>
+          <div class="label">Months of Madness</div>
         </div>
+        <div class="time-block">
+          <div class="number" id="days">0</div>
+          <div class="label">Days of Laughs</div>
+        </div>
+        <div class="time-block">
+          <div class="number" id="hours">0</div>
+          <div class="label">Hours of Fun</div>
+        </div>
+      </div>
+
+      <button class="fun-button" onclick="startParty()">
+        Click for Party Mode! 🎈
+      </button>
+
+      <!-- Dance Block: Toggle dance and music on click -->
+      <div class="meme-container" onclick="toggleDance()">
+        <div class="meme-text">Click on this to dance together</div>
+        <span class="dance-emoji">🕺</span>
+        <span class="dance-emoji">💃</span>
+      </div>
+
+      <div class="message">
+        <p>To my friend forever! 🦹‍♀️</p>
+        <p>
+          Thank you for being such a wonderful friend. I cherish every moment
+          we've spent talking and laughing together. I hope you'll always be by
+          my side, as we have many more years of memories to create and
+          appreciate.
+        </p>
+        <p>Click anywhere for more fun! 🎮</p>
+      </div>
+
+      <!-- Teasing Zone Section -->
+      <div class="teasing-section">
+        <h2>Teasing Zone</h2>
+        <p id="teaseDisplay">Ready for some playful teasing?</p>
+        <button class="fun-button" onclick="newTeasingMessage()">
+          Get Teased!
+        </button>
+      </div>
+
+      <!-- Virtual Hug Button -->
+      <button class="fun-button" onclick="sendHug()">
+        Send a Virtual Hug! 🤗
+      </button>
+
+      <!-- Balloon Pop Game Section -->
+      <div class="balloon-game-section">
+        <h2>Balloon Pop Game</h2>
+        <p>Pop as many balloons as you can in 30 seconds!</p>
+        <div
+          id="gameArea"
+          style="position: relative; height: 300px; border: 2px dashed #ff69b4; margin: 1rem auto; width: 100%; max-width: 400px;"
+        >
+          <!-- Balloons will appear here -->
+        </div>
+        <p>Time Left: <span id="timeLeft">30</span> seconds</p>
+        <p>Score: <span id="score">0</span></p>
+        <button class="fun-button" id="startGameBtn" onclick="startBalloonGame()">
+          Start Game
+        </button>
+      </div>
     </div>
 
-    <div class="music-controls" onclick="toggleMusic()">
-        🎵
-    </div>
-
+    <!-- Background Music using Ed Sheeran's "Perfect" -->
+    <!-- Replace the src URL with a valid, legally obtained URL or file path for "Perfect" by Ed Sheeran -->
     <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+      <source src="./Perfect.mp3" type="audio/mpeg" />
     </audio>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
-        const startDate = new Date('2022-02-15');
-        const funnyEmojis = ['🎈', '🎉', '🦄', '🌈', '🍕', '🎪', '🎭', '🎨', '🎪', '🎢'];
-        const funnyQuotes = [
-            "Friends don't let friends do silly things alone!",
-            "We're a different kind of crazy!",
-            "Normal is boring anyway!",
-            "Partners in crime since forever!",
-            "Two weirdos are better than one!"
-        ];
+      // Global variable for score
+      let score = 0;
+      let teaseIndex = 0;
+      let partyIndex = 0;
 
-        function updateTimer() {
-            const startDate = new Date("2022-02-20T00:00:00"); // Replace with your start date
-const now = new Date();
+      // Update friendship timer
+      function updateTimer() {
+        const startDate = new Date("2022-02-20T00:00:00");
+        const now = new Date();
 
-// Calculate raw differences
-let years = now.getFullYear() - startDate.getFullYear();
-let months = now.getMonth() - startDate.getMonth();
-let days = now.getDate() - startDate.getDate();
-let hours = now.getHours() - startDate.getHours();
+        let years = now.getFullYear() - startDate.getFullYear();
+        let months = now.getMonth() - startDate.getMonth();
+        let days = now.getDate() - startDate.getDate();
+        let hours = now.getHours() - startDate.getHours();
 
-// Adjust for negative hours
-if (hours < 0) {
-  hours += 24;
-  days--;
-}
-
-// Adjust for negative days (borrow days from previous month)
-if (days < 0) {
-  const lastDayOfPreviousMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-  days += lastDayOfPreviousMonth; // Adds actual days of the previous month
-  months--;
-}
-
-// Adjust for negative months (borrow months from years)
-if (months < 0) {
-  months += 12;
-  years--;
-}
-
-            document.getElementById('years').textContent = years;
-            document.getElementById('months').textContent = months;
-            document.getElementById('days').textContent = days;
-            document.getElementById('hours').textContent = hours;
+        if (hours < 0) {
+          hours += 24;
+          days--;
         }
 
-        function createEmojiRain() {
-            const emoji = funnyEmojis[Math.floor(Math.random() * funnyEmojis.length)];
-            const element = document.createElement('div');
-            element.className = 'emoji-rain';
-            element.textContent = emoji;
-            element.style.left = Math.random() * 100 + 'vw';
-            document.body.appendChild(element);
-
-            element.addEventListener('animationend', () => {
-                element.remove();
-            });
+        if (days < 0) {
+          const lastDayOfPreviousMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+          days += lastDayOfPreviousMonth;
+          months--;
         }
 
-        function startParty() {
-            // Start confetti
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
-
-            // Start emoji rain
-            for(let i = 0; i < 20; i++) {
-                setTimeout(createEmojiRain, i * 200);
-            }
-
-            // Show random quote
-            const quote = funnyQuotes[Math.floor(Math.random() * funnyQuotes.length)];
-            const quoteElement = document.createElement('div');
-            quoteElement.className = 'friend-quotes';
-            quoteElement.textContent = quote;
-            quoteElement.style.left = Math.random() * 50 + 25 + '%';
-            quoteElement.style.top = Math.random() * 50 + 25 + '%';
-            document.body.appendChild(quoteElement);
-            quoteElement.style.display = 'block';
-
-            setTimeout(() => {
-                quoteElement.remove();
-            }, 3000);
+        if (months < 0) {
+          months += 12;
+          years--;
         }
 
-        // Music controls
-        const music = document.getElementById('bgMusic');
-        let isMusicPlaying = false;
+        document.getElementById("years").textContent = years;
+        document.getElementById("months").textContent = months;
+        document.getElementById("days").textContent = days;
+        document.getElementById("hours").textContent = hours;
+      }
 
-        function toggleMusic() {
-            if (isMusicPlaying) {
-                music.pause();
-            } else {
-                music.play();
-            }
-            isMusicPlaying = !isMusicPlaying;
-        }
+      function createEmojiRain() {
+        const funnyEmojis = ["🎈", "🎉", "🦄", "🌈", "🍕", "🎪", "🎭", "🎨", "🎢"];
+        const emoji = funnyEmojis[Math.floor(Math.random() * funnyEmojis.length)];
+        const element = document.createElement("div");
+        element.className = "emoji-rain";
+        element.textContent = emoji;
+        element.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(element);
+        element.addEventListener("animationend", () => {
+          element.remove();
+        });
+      }
 
-        // Make entire page interactive
-        document.addEventListener('click', (e) => {
-            if (Math.random() > 0.5) {
-                createEmojiRain();
-            } else {
-                confetti({
-                    particleCount: 5,
-                    spread: 30,
-                    origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight }
-                });
-            }
+      function startParty() {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
         });
 
-        updateTimer();
-        setInterval(updateTimer, 1000 * 60 * 60);
+        for (let i = 0; i < 20; i++) {
+          setTimeout(createEmojiRain, i * 200);
+        }
+
+        const funnyQuotes = [
+          "You're one of my favorites!",
+          "We're both crazy, but you're crazier.",
+          "Don't act normal because I can't always act dumb.",
+          "We've been partners in gossip forever!",
+          "Two weirdos are better than one!",
+        ];
+        const quote = funnyQuotes[partyIndex];
+        partyIndex = (partyIndex + 1) % funnyQuotes.length;
+        const quoteElement = document.createElement("div");
+        quoteElement.className = "friend-quotes";
+        quoteElement.textContent = quote;
+        quoteElement.style.left = Math.random() * 50 + 25 + "%";
+        quoteElement.style.top = Math.random() * 50 + 25 + "%";
+        document.body.appendChild(quoteElement);
+        quoteElement.style.display = "block";
+        setTimeout(() => {
+          quoteElement.remove();
+        }, 3000);
+      }
+
+      // Toggle dance and music when the dance block is clicked
+      function toggleDance() {
+        const music = document.getElementById("bgMusic");
+        const danceEmojis = document.getElementsByClassName("dance-emoji");
+        if (!music.paused) {
+          // Pause both music and animations
+          music.pause();
+          for (let i = 0; i < danceEmojis.length; i++) {
+            danceEmojis[i].style.animationPlayState = "paused";
+          }
+        } else {
+          // Play both music and resume animations
+          music.play();
+          for (let i = 0; i < danceEmojis.length; i++) {
+            danceEmojis[i].style.animationPlayState = "running";
+          }
+        }
+      }
+
+      // Virtual Hug function
+      function sendHug() {
+        // Spawn 3 hug emojis with slight delays for a richer effect
+        for (let i = 0; i < 3; i++) {
+          let hug = document.createElement("div");
+          hug.className = "virtual-hug";
+          hug.textContent = "🤗";
+          // Position randomly along the horizontal axis
+          hug.style.left = Math.random() * 80 + 10 + "vw";
+          // Add a slight delay to each subsequent hug emoji
+          hug.style.animationDelay = i * 0.2 + "s";
+          document.body.appendChild(hug);
+          hug.addEventListener("animationend", () => {
+            hug.remove();
+          });
+        }
+      }
+
+      // Teasing message function
+      function newTeasingMessage() {
+        const messages = [
+          "You get mad at me more often than my phone rings!",
+          "Oh yeah, UNO world champion! 🏆🎉",
+          "Hope you don't give gifts to charity again! 😅",
+          "You gossip and complain about even the people we don't care about! 🤫🙄",
+          "If you're really thinking about that age 40 thing, could you postpone it until 50? I want to enjoy 10 more years of freedom! 😝🎉",
+          "You're addicted to chewing ice cubes, really? 🧊😝",
+          "That was just for fun—please don't get mad at me again! 😅🙏",
+        ];
+        const message = messages[teaseIndex];
+        teaseIndex = (teaseIndex + 1) % messages.length;
+
+        const teaseElement = document.getElementById("teaseDisplay");
+        teaseElement.textContent = message;
+        teaseElement.classList.remove("tease-animation");
+        void teaseElement.offsetWidth; // force reflow
+        teaseElement.classList.add("tease-animation");
+      }
+
+      // Return a random balloon type based on probability
+      function getRandomBalloonType() {
+        let rand = Math.random();
+        if (rand < 0.7) {
+          return { emoji: "🎈", points: 1, color: "#FF69B4" };
+        } else if (rand < 0.9) {
+          return { emoji: "💣", points: -1, color: "red" };
+        } else {
+          return { emoji: "🎉", points: 3, color: "gold" };
+        }
+      }
+
+      // Start Balloon Pop Game with enhanced features
+      function startBalloonGame() {
+        score = 0;
+        document.getElementById("score").textContent = score;
+        const startBtn = document.getElementById("startGameBtn");
+        startBtn.disabled = true;
+        startBtn.textContent = "Game in Progress...";
+        const gameArea = document.getElementById("gameArea");
+        gameArea.innerHTML = "";
+
+        let timeLeft = 30;
+        document.getElementById("timeLeft").textContent = timeLeft;
+
+        const countdownInterval = setInterval(function () {
+          timeLeft--;
+          document.getElementById("timeLeft").textContent = timeLeft;
+          if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+          }
+        }, 1000);
+
+        const balloonInterval = setInterval(createBalloon, 800);
+        setTimeout(() => {
+          createSpecialBalloon("😡", -5, "red");
+          createSpecialBalloon("❤️", +5, "green");
+        }, 20000);
+
+        setTimeout(() => {
+          clearInterval(balloonInterval);
+          setTimeout(() => {
+            gameArea.innerHTML = "";
+            startBtn.disabled = false;
+            startBtn.textContent = "Start Game";
+            alert("Game Over! Your score: " + score);
+          }, 1000);
+        }, 30000);
+      }
+
+      // Create and animate a balloon with a random type
+      function createBalloon() {
+        const gameArea = document.getElementById("gameArea");
+        const balloon = document.createElement("div");
+        balloon.classList.add("balloon");
+        const balloonType = getRandomBalloonType();
+        balloon.textContent = balloonType.emoji;
+        balloon.style.color = balloonType.color;
+        const gameAreaWidth = gameArea.offsetWidth;
+        const randomLeft = Math.random() * (gameAreaWidth - 30);
+        balloon.style.left = randomLeft + "px";
+        balloon.style.bottom = "0px";
+        const duration = 3 + Math.random() * 2;
+        balloon.style.animation = `balloonFloat ${duration}s linear forwards`;
+        balloon.addEventListener("click", function (event) {
+          event.stopPropagation();
+          score += balloonType.points;
+          document.getElementById("score").textContent = score;
+          balloon.style.transform = "scale(0)";
+          setTimeout(() => {
+            balloon.remove();
+          }, 200);
+        });
+        balloon.addEventListener("animationend", function () {
+          balloon.remove();
+        });
+        gameArea.appendChild(balloon);
+      }
+
+      // Make entire page interactive: confetti or emoji rain on click
+      document.addEventListener("click", (e) => {
+        if (Math.random() > 0.5) {
+          createEmojiRain();
+        } else {
+          confetti({
+            particleCount: 5,
+            spread: 30,
+            origin: {
+              x: e.clientX / window.innerWidth,
+              y: e.clientY / window.innerHeight,
+            },
+          });
+        }
+      });
+
+      function createSpecialBalloon(text, points, color) {
+        const gameArea = document.getElementById("gameArea");
+        const balloon = document.createElement("div");
+        balloon.classList.add("balloon");
+        balloon.textContent = text;
+        balloon.style.color = color;
+        const gameAreaWidth = gameArea.offsetWidth;
+        const randomLeft = Math.random() * (gameAreaWidth - 100);
+        balloon.style.left = randomLeft + "px";
+        balloon.style.bottom = "0px";
+        const duration = 4 + Math.random() * 2;
+        balloon.style.animation = `balloonFloat ${duration}s linear forwards`;
+        balloon.addEventListener("click", function (event) {
+          event.stopPropagation();
+          score += points;
+          document.getElementById("score").textContent = score;
+          balloon.style.transform = "scale(0)";
+          setTimeout(() => balloon.remove(), 200);
+        });
+        balloon.addEventListener("animationend", function () {
+          balloon.remove();
+        });
+        gameArea.appendChild(balloon);
+      }
+
+      updateTimer();
+      setInterval(updateTimer, 1000 * 60 * 60);
     </script>
-</body>
+  </body>
 </html>
