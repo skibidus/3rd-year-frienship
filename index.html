@@ -406,13 +406,24 @@
         <p>Pop as many balloons as you can in 30 seconds!</p>
         <div
           id="gameArea"
-          style="position: relative; height: 300px; border: 2px dashed #ff69b4; margin: 1rem auto; width: 100%; max-width: 400px;"
+          style="
+            position: relative;
+            height: 300px;
+            border: 2px dashed #ff69b4;
+            margin: 1rem auto;
+            width: 100%;
+            max-width: 400px;
+          "
         >
           <!-- Balloons will appear here -->
         </div>
         <p>Time Left: <span id="timeLeft">30</span> seconds</p>
         <p>Score: <span id="score">0</span></p>
-        <button class="fun-button" id="startGameBtn" onclick="startBalloonGame()">
+        <button
+          class="fun-button"
+          id="startGameBtn"
+          onclick="startBalloonGame()"
+        >
           Start Game
         </button>
       </div>
@@ -447,7 +458,11 @@
         }
 
         if (days < 0) {
-          const lastDayOfPreviousMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+          const lastDayOfPreviousMonth = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            0
+          ).getDate();
           days += lastDayOfPreviousMonth;
           months--;
         }
@@ -464,8 +479,19 @@
       }
 
       function createEmojiRain() {
-        const funnyEmojis = ["🎈", "🎉", "🦄", "🌈", "🍕", "🎪", "🎭", "🎨", "🎢"];
-        const emoji = funnyEmojis[Math.floor(Math.random() * funnyEmojis.length)];
+        const funnyEmojis = [
+          "🎈",
+          "🎉",
+          "🦄",
+          "🌈",
+          "🍕",
+          "🎪",
+          "🎭",
+          "🎨",
+          "🎢",
+        ];
+        const emoji =
+          funnyEmojis[Math.floor(Math.random() * funnyEmojis.length)];
         const element = document.createElement("div");
         element.className = "emoji-rain";
         element.textContent = emoji;
@@ -588,36 +614,54 @@
         const gameArea = document.getElementById("gameArea");
         gameArea.innerHTML = "";
 
-        let timeLeft = 30;
-        document.getElementById("timeLeft").textContent = timeLeft;
+        const totalGameTime = 30; // Total game duration in seconds
+        const gameStartTime = Date.now();
 
+        // HIGHLIGHT: New recursive function to spawn balloons with a dynamic (decreasing) delay.
+        function spawnBalloon() {
+          const elapsed = (Date.now() - gameStartTime) / 1000;
+          if (elapsed >= totalGameTime) return;
+
+          // HIGHLIGHT: Calculate dynamic spawn delay:
+          // At start, delay is near 800ms, and as elapsed time increases, delay decreases to around 300ms.
+          const spawnDelay = Math.max(
+            300,
+            800 - (elapsed / totalGameTime) * 500
+          );
+
+          // HIGHLIGHT: Pass the elapsed time to adjust the speed of the balloon.
+          createBalloon(elapsed);
+
+          // Recursively spawn the next balloon after the calculated delay.
+          setTimeout(spawnBalloon, spawnDelay);
+        }
+
+        spawnBalloon();
+
+        // Countdown timer for the game duration (unchanged).
+        let timeLeft = totalGameTime;
+        document.getElementById("timeLeft").textContent = timeLeft;
         const countdownInterval = setInterval(function () {
           timeLeft--;
           document.getElementById("timeLeft").textContent = timeLeft;
           if (timeLeft <= 0) {
             clearInterval(countdownInterval);
-          }
-        }, 1000);
-
-        const balloonInterval = setInterval(createBalloon, 800);
-        setTimeout(() => {
-          createSpecialBalloon("😡", -5, "red");
-          createSpecialBalloon("❤️", +5, "green");
-        }, 20000);
-
-        setTimeout(() => {
-          clearInterval(balloonInterval);
-          setTimeout(() => {
             gameArea.innerHTML = "";
             startBtn.disabled = false;
             startBtn.textContent = "Start Game";
             alert("Game Over! Your score: " + score);
-          }, 1000);
-        }, 30000);
+          }
+        }, 1000);
+
+        // Special balloons (triggered at 20 seconds into the game)
+        setTimeout(() => {
+          createSpecialBalloon("😡", -5, "red");
+          createSpecialBalloon("❤️", +5, "green");
+        }, 20000);
       }
 
       // Create and animate a balloon with a random type
-      function createBalloon() {
+      function createBalloon(elapsed) {
         const gameArea = document.getElementById("gameArea");
         const balloon = document.createElement("div");
         balloon.classList.add("balloon");
@@ -628,8 +672,16 @@
         const randomLeft = Math.random() * (gameAreaWidth - 30);
         balloon.style.left = randomLeft + "px";
         balloon.style.bottom = "0px";
-        const duration = 3 + Math.random() * 2;
+
+        // Base duration is set between 3 and 5 seconds.
+        const baseDuration = 3 + Math.random() * 2;
+
+        // HIGHLIGHT: Adjust the duration to speed up the balloon over time.
+        // The factor reduces linearly from 1 to 0.5 as elapsed time goes from 0 to 30 seconds.
+        const factor = Math.max(0.5, 1 - (elapsed / 30) * 0.5);
+        const duration = baseDuration * factor;
         balloon.style.animation = `balloonFloat ${duration}s linear forwards`;
+
         balloon.addEventListener("click", function (event) {
           event.stopPropagation();
           score += balloonType.points;
